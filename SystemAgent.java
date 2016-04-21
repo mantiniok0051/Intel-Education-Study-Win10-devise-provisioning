@@ -1,29 +1,26 @@
 package com.ieducation.study.deployment.agent;
 
 	import java.io.File;
-	import java.io.IOException;
-	import java.net.MalformedURLException;
-	import java.net.URL;
-	import java.nio.file.Path;
-	import java.util.concurrent.*;
-	
-	import org.openqa.selenium.WebElement;
-	import org.openqa.selenium.winium.DesktopOptions;
-	import org.openqa.selenium.winium.WiniumDriver;
-	
-	import java.util.List;
-	import java.util.Map;
+	import java.net.InetAddress;
+	import java.net.NetworkInterface;
+	import java.net.SocketException;
+	import java.net.UnknownHostException;
 
-@SuppressWarnings("unused")
-			public class FileSystemAgent {
+	import org.apache.commons.io.FileUtils;
+
+	
+
+
+//@SuppressWarnings("unused")
+			public class SystemAgent {
 			
-				public FileSystemAgent() {
+				public SystemAgent() {
 						setProfileURL();
-							System.out.println("Profile path: "+profileURL.getAbsolutePath());
+							System.out.println("Profile path: "+profileURL.getPath());
 						setCacheURL();
-							System.out.println("Cache path: "+cacheURL.getAbsolutePath());
+							System.out.println("Cache path: "+cacheURL.getPath());
 						setBooksFolder();
-							System.out.println("Books path: "+booksFolder.getAbsolutePath());
+							System.out.println("Books path: "+booksFolder.getPath());
 
 				}
 			
@@ -103,6 +100,43 @@ package com.ieducation.study.deployment.agent;
 				    return length;
 				}
 				
+				public String getMACAddress(){
+					String mac_addresss = null;
+					try {
+						    InetAddress IP = InetAddress.getLocalHost();
+							NetworkInterface network = NetworkInterface.getByInetAddress(IP);
+							byte[] mac = network.getHardwareAddress();
+							StringBuilder formater = new StringBuilder();
+							
+								for(int i = 0; i < mac.length; i++){
+										formater.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+								}
+								mac_addresss = formater.toString();
+						 } 
+					catch (UnknownHostException e) {e.printStackTrace();}
+					catch (SocketException e) {e.printStackTrace();}
+					
+					System.out.println("My Physical address: "+mac_addresss);
+					
+					return mac_addresss;
+				}
+				
+				public boolean validateProfile(){
+					if(profileURL != null ){return true;}
+					return false;
+				}
+
+				public boolean clearProfile(){
+					if(profileURL != null){	System.out.println("Ready to clear user profile and content cache");
+												   	System.out.println("Folder to be erased: "+profileURL.toString());
+												   	FileUtils.deleteQuietly(profileURL);
+												   	return  true;
+				   }
+					else if(setProfileURL()){clearProfile();}
+					
+					return false;
+				}
+				
 //===============Environment & Runtime Variables=====================================================//		
 										private static int profileFolderSize = 0;
 										private static File profileURL = null;
@@ -111,19 +145,19 @@ package com.ieducation.study.deployment.agent;
 //===============Getters and Setters for environment & runtime variables===================================================//		
 										public static int getProfileFolderSize() {return profileFolderSize;}
 
-										public static void setProfileFolderSize(int profileFolderSize) {FileSystemAgent.profileFolderSize = profileFolderSize;}
+										public static void setProfileFolderSize(int profileFolderSize) {SystemAgent.profileFolderSize = profileFolderSize;}
 
 										public static File getProfileURL() {return profileURL;}
 
-										public static void setProfileURL(File profileURL) {FileSystemAgent.profileURL = profileURL;}
+										public static void setProfileURL(File profileURL) {SystemAgent.profileURL = profileURL;}
 
 										public static File getCacheURL() {return cacheURL;}
 
-										public static void setCacheURL(File cacheURL) {FileSystemAgent.cacheURL = cacheURL;}
+										public static void setCacheURL(File cacheURL) {SystemAgent.cacheURL = cacheURL;}
 
 										public static File getBooksFolder() {return booksFolder;}
 
-										public static void setBooksFolder(File booksFolder) {FileSystemAgent.booksFolder = booksFolder;}
+										public static void setBooksFolder(File booksFolder) {SystemAgent.booksFolder = booksFolder;}
 
 
 										

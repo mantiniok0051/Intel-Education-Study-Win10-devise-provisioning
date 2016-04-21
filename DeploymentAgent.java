@@ -23,7 +23,11 @@ package com.ieducation.study.deployment.agent;
 	import org.openqa.selenium.winium.*;
 	import org.testng.annotations.*;
 
-	import winium.elements.desktop.*;
+import com.ieducation.study.deployment.agent.protocol.Commands;
+import com.ieducation.study.deployment.agent.protocol.Responses;
+import com.ieducation.study.deployment.agent.protocol.Statuses;
+
+import winium.elements.desktop.*;
 	import winium.elements.desktop.extensions.*;
 	import org.openqa.selenium.remote.*;
 
@@ -39,6 +43,7 @@ package com.ieducation.study.deployment.agent;
 					
 					studyUser = "amado.guerena@gdl.sandbox";
 					studyPwd= "intel123";
+
 					
 					System.out.println("Intel® Education Study Deployment tool");
 					System.out.println("User e-mail:     "+studyUser);
@@ -49,7 +54,7 @@ package com.ieducation.study.deployment.agent;
 					try {appAgent = new StudyAppAgent();} 
 					catch (InterruptedException e) {e.printStackTrace();}
 					
-					fsAgent = new FileSystemAgent();
+					fsAgent = new SystemAgent();
 				
 						System.out.println("No errors at the moment.");
 					
@@ -72,10 +77,12 @@ package com.ieducation.study.deployment.agent;
 						private static String studyUser = null;
 						private static String studyPwd = null;
 						private static StudyAppAgent appAgent=null;
-						private static FileSystemAgent fsAgent=null;
+						private static SystemAgent fsAgent=null;
 						private static CommunicationsAgent comAgent = null;
-
-//===============Environment & Runtime Variables===================================================//		
+						private static Statuses actual_status= null;
+						private static Commands command = null;
+						private static Responses response = null;
+//===============Environment _& _Runtime_Variables===================================================//		
 
 
 				

@@ -114,7 +114,7 @@ public class StudyAppAgent {
 			private static DesktopOptions dskOptions = new DesktopOptions();
 			private static String appName = new String("Intel® Education Study");
 			private static WebElement appWindow = null;
-
+			private static String[] credentials = new String[2];
 //===============Environment & Runtime Variables===================================================//		
 			
 			
