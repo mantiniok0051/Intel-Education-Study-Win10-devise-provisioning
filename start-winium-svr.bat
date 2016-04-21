@@ -1,0 +1,1 @@
+runas /noprofile /savecred /user:GDC633495\Administrator "c:\_deploy\Winium.Desktop.Driver.exe --verbose"
