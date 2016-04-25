@@ -19,11 +19,11 @@ package com.ieducation.study.deployment.agent;
 			
 				public FileSystemAgent() {
 						setProfileURL();
-							System.out.println("Profile path: "+profileURL.getPath());
+							System.out.println("Profile path: "+profileURL.getAbsolutePath());
 						setCacheURL();
-							System.out.println("Cache path: "+cacheURL.getPath());
+							System.out.println("Cache path: "+cacheURL.getAbsolutePath());
 						setBooksFolder();
-							System.out.println("Books path: "+booksFolder.getPath());
+							System.out.println("Books path: "+booksFolder.getAbsolutePath());
 
 				}
 			

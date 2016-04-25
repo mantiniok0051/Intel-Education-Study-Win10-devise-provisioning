@@ -27,7 +27,7 @@ public class StudyAppAgent {
 			}
 		
 			
-		public static boolean signIn(String usr, String pwd){
+		public boolean signIn(String usr, String pwd){
 				System.out.println("Starting Sign In ");
 						//Find SignInButton control
 				try{	WebElement signInButton = ieStudy.findElementById("SignInButton");
@@ -60,7 +60,7 @@ public class StudyAppAgent {
 				return false;
 			}
 			
-		public static boolean navigateTo(int target){
+		public boolean navigateTo(int target){
 							//Receive a integer value pass it through a switch to access the desired section 
 							//0="My Collections"; 1="My library"; 2="MyStats"; 3="Store"
 								System.out.println("Init navigateTo");
@@ -76,7 +76,7 @@ public class StudyAppAgent {
 							return false;
 						}
 	
-		public static void downloadAllbooks(){
+		public void downloadAllbooks(){
 			WebElement ScrollViewer = ieStudy.findElement(By.className("ScrollViewer"));
 			List<WebElement> books = ScrollViewer.findElements(By.className("BookModelJacket"));
 			
@@ -107,6 +107,11 @@ public class StudyAppAgent {
 			
 		}
 		
+		public void destroyEnviroment(){
+			ieStudy.close();
+			
+		}
+		
 //===============Environment & Runtime Variables=====================================================//		
 			private static WiniumDriver ieStudy = null;
 			private static String appURL = new String("C:\\Program Files (x86)\\Intel Education\\Study App\\Kno.TextBooks.exe");
@@ -114,7 +119,7 @@ public class StudyAppAgent {
 			private static DesktopOptions dskOptions = new DesktopOptions();
 			private static String appName = new String("Intel® Education Study");
 			private static WebElement appWindow = null;
-
+			private static String[] credentials = new String[2];
 //===============Environment & Runtime Variables===================================================//		
 			
 			

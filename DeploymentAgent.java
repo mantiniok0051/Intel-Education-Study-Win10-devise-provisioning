@@ -23,7 +23,11 @@ package com.ieducation.study.deployment.agent;
 	import org.openqa.selenium.winium.*;
 	import org.testng.annotations.*;
 
-	import winium.elements.desktop.*;
+import com.ieducation.study.deployment.agent.protocol.Commands;
+import com.ieducation.study.deployment.agent.protocol.Responses;
+import com.ieducation.study.deployment.agent.protocol.Statuses;
+
+import winium.elements.desktop.*;
 	import winium.elements.desktop.extensions.*;
 	import org.openqa.selenium.remote.*;
 
@@ -37,8 +41,9 @@ package com.ieducation.study.deployment.agent;
 
 					System.out.println("Seting up depoyer environment...");
 					
-					studyUser = "amado.guerena@gdl.sandbox";
-					studyPwd= "intel123";
+					studyUser = "amado.guerena@intel.com";
+					studyPwd= "lala1234";
+
 					
 					System.out.println("Intel® Education Study Deployment tool");
 					System.out.println("User e-mail:     "+studyUser);
@@ -49,11 +54,11 @@ package com.ieducation.study.deployment.agent;
 					try {appAgent = new StudyAppAgent();} 
 					catch (InterruptedException e) {e.printStackTrace();}
 					
-					fsAgent = new FileSystemAgent();
+					fsAgent = new SystemAgent();
 				
 						System.out.println("No errors at the moment.");
 					
-						try {Thread.sleep(60000);} 
+						try {Thread.sleep(6000);} 
 						catch (InterruptedException e) {e.printStackTrace();}
 					
 				}
@@ -63,7 +68,35 @@ package com.ieducation.study.deployment.agent;
 				 */
 				public static void main(String[] args){
 					new DeploymentAgent();
-						
+					try {Thread.sleep(5000);} 
+					catch (InterruptedException e) {e.printStackTrace();}
+					
+					appAgent.signIn(studyUser, studyPwd);
+					try {Thread.sleep(45000);} 
+					catch (InterruptedException e) {e.printStackTrace();}
+					
+					
+					long expected_size = 10400000;
+					while(!fsAgent.monitorBookCoverSideload(expected_size)){
+						try {Thread.sleep(60000);} 
+						catch (InterruptedException e) {e.printStackTrace();}
+						}
+					
+					appAgent.navigateTo(1);	
+					try {Thread.sleep(4000);} 
+					catch (InterruptedException e) {e.printStackTrace();}
+					
+					appAgent.downloadAllbooks();
+					
+					while(fsAgent.monitorBooksDownload()){
+						try {Thread.sleep(4000);} 
+						catch (InterruptedException e) {e.printStackTrace();}
+					}
+					
+					try {Thread.sleep(30000);} 
+					catch (InterruptedException e) {e.printStackTrace();}
+					
+					appAgent.destroyEnviroment();
 				}
 			
 				
@@ -72,10 +105,12 @@ package com.ieducation.study.deployment.agent;
 						private static String studyUser = null;
 						private static String studyPwd = null;
 						private static StudyAppAgent appAgent=null;
-						private static FileSystemAgent fsAgent=null;
+						private static SystemAgent fsAgent=null;
 						private static CommunicationsAgent comAgent = null;
-
-//===============Environment & Runtime Variables===================================================//		
+						private static Statuses actual_status= null;
+						private static Commands command = null;
+						private static Responses response = null;
+//===============Environment _& _Runtime_Variables===================================================//		
 
 
 				
